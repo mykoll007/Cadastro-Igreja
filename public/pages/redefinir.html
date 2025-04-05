@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Altere sua senha</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@100..1000&family=Inter:wght@100..900&family=Poppins:wght@100..900&family=Urbanist:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <img src="../assets/logo-vivendo.jpg" alt="Logo da Igreja Vivendo um Novo Tempo">
+        <h2>Altere sua senha</h2>
+        <div class="desc-acesse" >
+            <p>Informe sua nova senha para acessar o login</p>
+        </div>
+        <form>
+            <label for="senhaRedefinir" id="senhaRedefinir">Senha</label>
+            <input type="password" required>
+
+            <label for="confirmar-senha" id="confirmar-senha">Confirmar Senha</label>
+            <input type="password" required>
+
+            <p id="mensagem-erro"></p>
+            <button type="submit" id="redefinir-btn">Redefinir</button>
+        </form>
+
+
+
+
+    </div>
+    <div id="overlay-loading">
+        <div class="spinner"></div>
+      </div>
+
+    <script src="../js/redefinir.js"></script>
+</body>
+</html>

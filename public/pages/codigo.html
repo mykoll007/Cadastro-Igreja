@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmar Código</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@100..1000&family=Inter:wght@100..900&family=Poppins:wght@100..900&family=Urbanist:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="align-seta">
+        <a href="recuperar.html"><img src="../assets/arrow.png" id="seta-retroceder" alt="Seta para voltar página"></a>
+        </div>
+        <img src="../assets/logo-vivendo.jpg" alt="Logo da Igreja Vivendo um Novo Tempo">
+        <h2>Confirme o código</h2>
+        <div class="desc-acesse" id="desc-recuperar">
+            <p>Informe os digitos que foram enviados para seu email</p>
+        </div>
+        <div id="align-form">
+        <form id="formCodigo" class="codigo-form">
+            <div class="codigo-inputs">
+                <input type="text" maxlength="1" inputmode="numeric" class="codigo" required>
+                <input type="text" maxlength="1" inputmode="numeric" class="codigo" required>
+                <input type="text" maxlength="1" inputmode="numeric" class="codigo" required>
+                <input type="text" maxlength="1" inputmode="numeric" class="codigo" required>
+                <input type="text" maxlength="1" inputmode="numeric" class="codigo" required>
+            </div>
+            <p id="mensagem-erro" style="color: red; margin-top: 12px; font-weight: 500;"></p>
+            <button type="submit">Validar o código</button>
+        </form>
+        </div>
+    </div>
+    <div id="overlay-loading">
+        <div class="spinner"></div>
+      </div>
+
+    <script src="../js/codigo.js"></script>
+</body>
+</html>

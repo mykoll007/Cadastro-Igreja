@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Membros</title>
+    <link rel="stylesheet" href="../css/inicio.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@100..1000&family=Inter:wght@100..900&family=Poppins:wght@100..900&family=Urbanist:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <img src="../assets/logo-vivendo.jpg" alt="Logo da empresa">
+        
+        <div id="align-btn">
+            <a href="cadastroAdmin.html">+ Add Novo Membro</a>
+        </div>   
+
+        <h2>Lista de Membros</h2>
+
+        <div id="area-total">
+            <p id="total">Total (0)</p>
+            <button id="btn-recarregar" title="Recarregar lista">
+              <img src="../assets/Atualizar.png" id="icone-recarregar" alt="Atualizar" />
+            </button>
+          </div>
+
+        <div id="align-search">
+            <div class="search-container">
+                <img src="../assets/Search.png" alt="Ícone de busca">
+                <input type="text" placeholder="Pesquisar membro" id="campo-pesquisa">
+            </div>
+        </div>
+
+        <p id="mensagem-vazia" class="hidden">Nenhum membro encontrado.</p>
+
+        <!-- Local onde os membros serão adicionados dinamicamente -->
+        <div id="lista-membros"></div>
+    </div>
+
+
+<!-- Modal de Confirmação de Exclusão-->
+<div id="modal-excluir" class="modal hidden">
+    <div class="modal-content">
+      <p id="texto-modal-exclusao">Tem certeza que deseja excluir este membro?</p>
+      <div class="modal-buttons">
+        <button id="confirmar-exclusao">Sim, excluir</button>
+        <button id="cancelar-exclusao">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+    <!-- Bolinha de carregamento -->
+    <div id="overlay-loading">
+      <div class="spinner"></div>
+    </div>
+
+    <script src="../js/inicio.js"></script>
+</body>
+</html>

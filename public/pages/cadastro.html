@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Membros</title>
+    <link rel="stylesheet" href="../css/cadastro.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="container">
+        <img src="../assets/logo-vivendo.jpg" alt="Logo Vivendo um Novo Tempo">
+        <h2>Cadastro de Membros</h2>
+        <p>Paz, queridos membros da Igreja Vivendo um Novo Tempo!</p>
+
+        <p id="desc-bemvindo">Sejam bem-vindos! Este formulário foi criado para registrar suas informações e permitir um melhor acompanhamento da sua caminhada na fé. Pedimos que preencham com atenção.</p>
+
+        <form>
+            <label for="nome">Nome Completo</label>
+            <input type="text" id="nome" name="nome" required>
+    
+            <label for="nascimento">Data de nascimento</label>
+            <input type="date" id="nascimento" name="nascimento" placeholder="DD/MM/YYYY" required>
+            <span id="erro-nascimento" class="erro-mensagem"></span>
+
+            <label for="telefone">Telefone</label>
+            <input type="text" id="telefone" name="telefone" placeholder="(11) 99999-9999" required>
+            <span id="erro-telefone" class="erro"></span>
+    
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email" placeholder="membro@gmail.com" required>
+    
+            <label for="endereco">Endereço</label>
+            <input type="text" id="endereco" name="endereco" placeholder="R. Diego Velasquez, 105 - Jardim Britânia" required>
+    
+            <label>Estado Civil</label>
+            <div class="checkbox-group">
+                <label><input type="checkbox" name="estado_civil" value="Solteiro"> Solteiro</label>
+                <label><input type="checkbox" name="estado_civil" value="Casado" > Casado</label>
+                <label><input type="checkbox" name="estado_civil" value="Divorciado"> Divorciado</label>
+                <label><input type="checkbox" name="estado_civil" value="Viuvo"> Viúvo</label>
+            </div>
+            <span id="erro-estado-civil" class="erro"></span>
+    
+            <label for="entrada_igreja">Data de entrada na igreja</label>
+            <input type="date" id="entrada_igreja" name="entrada_igreja" placeholder="DD/MM/YYYY" required>
+            <span id="erro-entrada" class="erro-mensagem"></span>
+    
+            <label>Já é batizado?</label>
+            <div class="radio-group">
+                <label><input type="radio" name="batizado" value="sim" onclick="mostrarCampo()"> Sim</label>
+                <label><input type="radio" name="batizado" value="nao" onclick="esconderCampo()"> Não</label>
+            </div>
+
+            <span id="erro-batismo" class="erro"></span>
+
+            <div id="data-batismo">
+                <label for="batismo">Qual a data do batismo?</label>
+                <input type="date" id="batismo" name="batismo" placeholder="DD/MM/YYYY" >
+                <span id="erro-data-batismo" class="erro"></span>
+    
+            </div>
+    
+            <button type="submit">Cadastrar</button>
+        </form>
+        <p id="aviso"><b>Importante</b>: Seus dados serão mantidos em sigilo e utilizados exclusivamente para fins administrativos da igreja, conforme a Lei Geral de Proteção de Dados (LGPD – Lei nº 13.709/2018). Ao prosseguir, você concorda com esse uso.</p>
+
+
+
+
+
+
+
+
+
+
+    </div>
+    <script src="../js/cadastro.js"></script>
+</body>
+</html>

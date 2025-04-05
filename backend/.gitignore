@@ -1,0 +1,3 @@
+# Ignorar node_modules e .env na pasta atual
+node_modules/
+.env

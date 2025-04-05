@@ -1,0 +1,213 @@
+.container{
+    text-align: center;
+    font-family: "inter";
+    margin-top: 72px;
+}
+a{
+    text-decoration: none;
+}
+img{
+    width: 229px;
+}
+h2{
+    margin-bottom: 11px;
+}
+.desc-acesse{
+    display: flex;
+    justify-content: center;
+}
+.desc-acesse p{
+    color: grey;
+    max-width: 380px;
+}
+#align-alternar{
+    display: flex;
+    justify-content: center;
+    margin-top: 19px;
+    margin-bottom: 11px;
+}
+#alternar-button{
+    background-color: #F5F6F9;
+    max-width: 400px;
+    width: 100%;
+    height: 46px;
+    display: flex;
+    border: 1px solid #F5F6F9;
+    border-radius: 7px;
+    align-items: center;
+}
+#alternar-button button{
+    height: 40px;
+    width: 100%;
+    font-family: 'Inter';   
+    border-radius: 7px;
+    margin: 3px;
+    font-size: 16px;
+    cursor: pointer;
+}
+#loginBtn{
+    background-color: white;
+    border: 1px solid white;    
+}
+#cadastroBtn{
+    background-color: unset;
+    border: unset;
+    color: #7D7D91;
+}
+form{
+    width: 100%;
+    display: inline-block;
+    max-width: 418px;
+}
+label{
+    font-weight: 500;
+    padding: 0 3%;
+    font-size: 15px;
+    color: black;
+    display: block;
+    margin-top: 10px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+}
+input{
+    width: 90%;
+    font-family: 'Inter';
+    font-size: 15px;
+    padding: 8px;
+    height: 28px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+}
+#esqueceu{
+    display: flex;
+    justify-content: end;
+    margin-right: 3%;
+    margin-top: 7px;
+    margin-bottom: 25px;
+
+}
+#esqueceu p{
+    text-align: end;
+    max-width: 147px;
+    margin-top: 7px;
+    font-weight: 600;
+    margin: 0;
+    color: #009CFF;
+    font-size: 14px;
+}
+form button{
+    color: white;
+    margin-bottom: 3px;
+    background-color: #009CFF;
+    border: 1px solid #009CFF;
+    width: 275px;
+    font-size: 15px;
+    height: 48px;
+    border-radius: 7px;
+    font-family: 'Inter';
+    cursor: pointer;
+}
+
+#formCadastro button{
+    margin-top: 10px;
+}
+#mensagem-erro {
+    color: red;
+    font-weight: bold;
+}
+
+/*----------------- RECUPERAR.HTML------------------- */
+
+#desc-recuperar{
+    margin-bottom: 17px;
+}
+
+#formRecuperar input{
+    margin-bottom: 28px;
+}
+#seta-retroceder{
+    width: 34px;
+    display: block;
+
+}
+.align-seta{
+    display: flex;
+    justify-content: center;
+}
+.align-seta a{
+    display: flex;
+        width: 400px;
+        margin-bottom: 25px;
+}
+
+
+/* ---------------CODIGO.HTML---------------------- */
+#align-form{
+    display: flex;
+    justify-content: center;
+}
+.codigo-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.codigo-inputs {
+    display: flex;
+    gap: 10px;
+}
+
+.codigo-inputs input {
+    max-width: 45px;
+    min-width: 40px;
+    height: 50px;
+    font-size: 24px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    color: white;
+    background-color: #009CFF;
+}
+
+/* ------------REDEFINIR.HTML */
+#senhaRedefinir{
+    margin-top: 28px;
+}
+#redefinir-btn{
+    margin-top: 15px;
+}
+
+
+
+/* Carregando do loading */
+#overlay-loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+  
+  .spinner {
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #3498db;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
