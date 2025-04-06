@@ -240,14 +240,10 @@ validarData(document.getElementById("batismo"), "erro-data-batismo");
                 // ✅ Redireciona para cadastrado.html
                 window.location.href = "cadastrado.html";
             } else {
-                if (resultado.message === "E-mail já cadastrado.") {
-                    emailInput.value = ""; // Limpa o campo de e-mail
-                    emailInput.focus(); // Foca no campo de e-mail
-                    erroEmail.textContent = "Este e-mail já está cadastrado. Por favor, insira outro.";
-                } else {
+
                     alert("Erro: " + resultado.message);
                 }
-            }
+            
         } catch (erro) {
             console.error("Erro ao enviar os dados:", erro);
             alert("Erro ao conectar ao servidor.");

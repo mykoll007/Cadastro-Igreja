@@ -29,9 +29,6 @@ class UserController {
         const dataBatismoFormatada = batizado === "sim" ? data_batismo : null;
         
         database.select('*').from('usuarios').where('email', email).then(existeUsuario => {
-            if (existeUsuario.length > 0) {
-                return response.status(400).json({ message: "E-mail já cadastrado." });
-            }
 
             database.insert({ 
                 nome_completo, 
