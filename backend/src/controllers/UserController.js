@@ -16,34 +16,43 @@ class UserController {
     
         // Função para converter "dd/mm/yyyy" para "yyyy-mm-dd"
         function formatarDataParaBanco(data) {
+            if (!data) return null;
             const [dia, mes, ano] = data.split('/');
             return `${ano}-${mes}-${dia}`;
         }
     
+        // Validação simples da data de batismo se necessário
         if (batizado === "Sim" && !data_batismo) {
             return response.status(400).json({ message: "Por favor, preencha a data do batismo." });
         }
     
-        const dataNascimentoFormatada = data_nascimento; 
-        const dataEntradaFormatada = data_entrada; 
-        const dataBatismoFormatada = batizado === "sim" ? data_batismo : null;
+        // Formata datas (se necessário)
+        const dataNascimentoFormatada = data_nascimento;
+        const dataEntradaFormatada = data_entrada;
+        const dataBatismoFormatada = batizado === "Sim" ? data_batismo : null;
     
-        database.insert({ 
-            nome_completo, 
-            data_nascimento: dataNascimentoFormatada, 
-            telefone, 
-            email, 
-            endereco, 
-            estado_civil, 
-            data_entrada: dataEntradaFormatada, 
-            batizado, 
-            data_batismo: dataBatismoFormatada
-        }).table("usuarios").then(() => {
-            response.status(201).json({ message: "Seu cadastro foi realizado com sucesso!" });
-        }).catch(() => {
-            response.status(500).json({ message: "Erro ao criar usuário." });
-        });
+        // Inserção direta sem checar duplicidade de e-mail
+        try {
+            await database("usuarios").insert({
+                nome_completo,
+                data_nascimento: dataNascimentoFormatada,
+                telefone,
+                email,
+                endereco,
+                estado_civil,
+                data_entrada: dataEntradaFormatada,
+                batizado,
+                data_batismo: dataBatismoFormatada
+            });
+    
+            return response.status(201).json({ message: "Seu cadastro foi realizado com sucesso!" });
+    
+        } catch (err) {
+            console.error("❌ Erro ao inserir usuário no banco:", err); // 👈 Vai mostrar o erro real no terminal
+            return response.status(500).json({ message: "Erro ao criar usuário." });
+        }
     }
+    
     
     async listarUsuarios(request, response) {
         try {
