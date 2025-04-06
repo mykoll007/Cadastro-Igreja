@@ -13,43 +13,38 @@ class UserController {
             batizado, 
             data_batismo 
         } = request.body;
-
+    
         // Função para converter "dd/mm/yyyy" para "yyyy-mm-dd"
         function formatarDataParaBanco(data) {
             const [dia, mes, ano] = data.split('/');
             return `${ano}-${mes}-${dia}`;
         }
-
+    
         if (batizado === "Sim" && !data_batismo) {
             return response.status(400).json({ message: "Por favor, preencha a data do batismo." });
         }
-
+    
         const dataNascimentoFormatada = data_nascimento; 
         const dataEntradaFormatada = data_entrada; 
         const dataBatismoFormatada = batizado === "sim" ? data_batismo : null;
-        
-        database.select('*').from('usuarios').where('email', email).then(existeUsuario => {
-
-            database.insert({ 
-                nome_completo, 
-                data_nascimento: dataNascimentoFormatada, 
-                telefone, 
-                email, 
-                endereco, 
-                estado_civil, 
-                data_entrada: dataEntradaFormatada, 
-                batizado, 
-                data_batismo: dataBatismoFormatada
-            }).table("usuarios").then(() => {
-                response.status(201).json({ message: "Seu cadastro foi realizado com sucesso!" });
-            }).catch(() => {
-                response.status(500).json({ message: "Erro ao criar usuário." });
-            });
-
+    
+        database.insert({ 
+            nome_completo, 
+            data_nascimento: dataNascimentoFormatada, 
+            telefone, 
+            email, 
+            endereco, 
+            estado_civil, 
+            data_entrada: dataEntradaFormatada, 
+            batizado, 
+            data_batismo: dataBatismoFormatada
+        }).table("usuarios").then(() => {
+            response.status(201).json({ message: "Seu cadastro foi realizado com sucesso!" });
         }).catch(() => {
-            response.status(500).json({ message: "Erro ao verificar usuário existente." });
+            response.status(500).json({ message: "Erro ao criar usuário." });
         });
     }
+    
     async listarUsuarios(request, response) {
         try {
             const usuarios = await database
