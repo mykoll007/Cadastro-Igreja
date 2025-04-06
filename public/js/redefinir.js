@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
         overlay.style.display = "flex"; // Mostra o loading
 
         try {
-            const response = await fetch("http://localhost:3600/admin/redefinir", {
+            const response = await fetch("https://cadastro-igreja-ten.vercel.app/admin/redefinir", {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"

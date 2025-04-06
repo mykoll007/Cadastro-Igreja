@@ -19,7 +19,7 @@ function formatarData(dataISO) {
 if (!id || !token) {
     window.location.href = "inicio.html"; // Redireciona se estiver errado
 } else {
-    fetch(`http://localhost:3600/usuario/${id}`, {
+    fetch(`https://cadastro-igreja-ten.vercel.app/usuario/${id}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -348,7 +348,7 @@ document.getElementById("btn-alterar").addEventListener("click", async function 
     try {
         document.getElementById("overlay-loading").style.display = "flex";
 
-        const res = await fetch(`http://localhost:3600/usuario/${id}`, {
+        const res = await fetch(`https://cadastro-igreja-ten.vercel.app/usuario/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -420,7 +420,7 @@ document.getElementById("confirmar-exclusao").addEventListener("click", async ()
         const token = sessionStorage.getItem("token");
         
 
-        const response = await fetch(`http://localhost:3600/usuario/${id}`, {
+        const response = await fetch(`https://cadastro-igreja-ten.vercel.app/usuario/${id}`, {
             method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${token}`

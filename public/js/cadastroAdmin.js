@@ -228,7 +228,7 @@ validarData(document.getElementById("batismo"), "erro-data-batismo");
         try {
             document.getElementById("overlay-loading").style.display = "flex";
             
-            const resposta = await fetch("http://localhost:3600/usuario/cadastrar", {
+            const resposta = await fetch("https://cadastro-igreja-ten.vercel.app/usuario/cadastrar", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     try {
-        const response = await fetch("http://localhost:3600/usuarios", {
+        const response = await fetch("https://cadastro-igreja-ten.vercel.app/usuarios", {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -154,7 +154,7 @@ document.getElementById("confirmar-exclusao").addEventListener("click", async ()
     try {
         const token = sessionStorage.getItem("token");
 
-        const response = await fetch(`http://localhost:3600/usuario/${idParaExcluir}`, {
+        const response = await fetch(`https://cadastro-igreja-ten.vercel.app/usuario/${idParaExcluir}`, {
             method: "DELETE",
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -196,7 +196,7 @@ document.getElementById("btn-recarregar").addEventListener("click", async () => 
     const token = sessionStorage.getItem("token");
 
     try {
-        const response = await fetch("http://localhost:3600/usuarios", {
+        const response = await fetch("https://cadastro-igreja-ten.vercel.app/usuarios", {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`

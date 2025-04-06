@@ -203,6 +203,9 @@ validarData(document.getElementById("batismo"), "erro-data-batismo");
             return;
         }
 
+        // Mostra o overlay de loading
+        document.getElementById("overlay-loading").style.display = "flex";
+
         const formData = new FormData(formulario);
         const estadoCivilSelecionado = document.querySelector("input[name='estado_civil']:checked");
         formData.set("estado_civil", estadoCivilSelecionado ? estadoCivilSelecionado.value : "");
@@ -220,7 +223,7 @@ validarData(document.getElementById("batismo"), "erro-data-batismo");
         };
 
         try {
-            const resposta = await fetch("http://localhost:3600/usuario/cadastrar", {
+            const resposta = await fetch("https://cadastro-igreja-ten.vercel.app/usuario/cadastrar", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -248,6 +251,9 @@ validarData(document.getElementById("batismo"), "erro-data-batismo");
         } catch (erro) {
             console.error("Erro ao enviar os dados:", erro);
             alert("Erro ao conectar ao servidor.");
+        }finally {
+            // Esconde o overlay de loading após o processo
+            document.getElementById("overlay-loading").style.display = "none";
         }
     });
 

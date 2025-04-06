@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
             const [response] = await Promise.all([
-                fetch("http://localhost:3600/admin/cadastrar", {
+                fetch("https://cadastro-igreja-ten.vercel.app/admin/cadastrar", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
             const [response] = await Promise.all([
-                fetch("http://localhost:3600/admin/login", {
+                fetch("https://cadastro-igreja-ten.vercel.app/admin/login", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"

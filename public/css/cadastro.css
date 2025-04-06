@@ -123,6 +123,7 @@ img{
 .mensagem-cadastrado {
     font-size: 20px;
     color: green;
+    max-width: unset;
 }
 .botao-cadastrado{
     color: white;

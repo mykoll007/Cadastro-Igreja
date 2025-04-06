@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
         overlay.style.display = "flex";
     
         try {
-            const response = await fetch("http://localhost:3600/admin/validar", {
+            const response = await fetch("https://cadastro-igreja-ten.vercel.app/admin/validar", {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
