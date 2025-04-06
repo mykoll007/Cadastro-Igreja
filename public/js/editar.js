@@ -9,11 +9,13 @@ const token = sessionStorage.getItem("token");
 function formatarData(dataISO) {
     if (!dataISO) return "";
     const data = new Date(dataISO);
+    data.setDate(data.getDate() + 1); // Soma +1 dia
     const ano = data.getFullYear();
     const mes = String(data.getMonth() + 1).padStart(2, '0');
     const dia = String(data.getDate()).padStart(2, '0');
     return `${ano}-${mes}-${dia}`;
 }
+
 
 // Verifica se há ID e Token válidos
 if (!id || !token) {
