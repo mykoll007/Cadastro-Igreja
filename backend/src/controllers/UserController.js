@@ -13,31 +13,29 @@ class UserController {
             batizado, 
             data_batismo 
         } = request.body;
-
-        console.log("📦 Dados recebidos do front:", request.body);
-
     
-        function formatarDataParaBanco(data) {
-            if (!data) return null;
-            const [ano, mes, dia] = data.split('-');
-            return `${ano}-${mes}-${dia}`;
-        }
+        // 🧼 Normalize o valor de 'batizado' para evitar erros com maiúsculas/minúsculas
+        const batizadoNormalizado = batizado?.toLowerCase();
     
-        if (batizado === "Sim" && !data_batismo) {
+        // ✅ Se for batizado, data do batismo é obrigatória
+        if (batizadoNormalizado === "sim" && !data_batismo) {
             return response.status(400).json({ message: "Por favor, preencha a data do batismo." });
         }
+    
+        // 🎯 Define data_batismo como null caso não seja batizado
+        const dataBatismoFinal = batizadoNormalizado === "sim" ? data_batismo : null;
     
         try {
             await database("usuarios").insert({
                 nome_completo,
-                data_nascimento: formatarDataParaBanco(data_nascimento),
+                data_nascimento,
                 telefone,
                 email,
                 endereco,
                 estado_civil,
-                data_entrada: formatarDataParaBanco(data_entrada),
-                batizado,
-                data_batismo: batizado === "sim" ? formatarDataParaBanco(data_batismo) : null
+                data_entrada,
+                batizado: batizadoNormalizado, // também salva padronizado
+                data_batismo: dataBatismoFinal
             });
     
             return response.status(201).json({ message: "Seu cadastro foi realizado com sucesso!" });
@@ -47,6 +45,7 @@ class UserController {
             return response.status(500).json({ message: "Erro ao criar usuário." });
         }
     }
+    
 
     
     

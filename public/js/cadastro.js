@@ -137,7 +137,7 @@ validarData(document.getElementById("batismo"), "erro-data-batismo");
 
     function esconderCampo() {
         document.getElementById("data-batismo").style.display = "none";
-        document.getElementById("batismo").value = "";
+        // document.getElementById("batismo").value = "";
     }
 
     const radioBatizado = document.querySelectorAll("input[name='batizado']");
@@ -163,7 +163,7 @@ validarData(document.getElementById("batismo"), "erro-data-batismo");
         }
 
         const dataBatismo = document.getElementById("batismo");
-        if (valorSelecionado === "sim" && !dataBatismo.value) {
+        if (valorSelecionado === "Sim" && !dataBatismo.value) {
             erroDataBatismo.textContent = "Informe a data do batismo.";
             dataBatismo.scrollIntoView({ behavior: "smooth", block: "center" });
             return false;
@@ -218,8 +218,8 @@ validarData(document.getElementById("batismo"), "erro-data-batismo");
             endereco: formData.get("endereco"),
             estado_civil: formData.get("estado_civil"),
             data_entrada: formData.get("entrada_igreja"),
-            batizado: formData.get("batizado"),
-            data_batismo: formData.get("batismo") || null
+            batizado: formData.get("batizado")?.toLowerCase(),
+            data_batismo: formData.get("batismo") ? formData.get("batismo") : null
         };
 
         try {
