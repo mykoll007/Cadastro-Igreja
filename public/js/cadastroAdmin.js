@@ -181,7 +181,7 @@ validarData(document.getElementById("batismo"), "erro-data-batismo");
 
     radioBatizado.forEach((radio) => {
         radio.addEventListener("change", function () {
-            if (this.value === "sim") {
+            if (this.value === "Sim") {
                 mostrarCampo();
             } else {
                 esconderCampo();
