@@ -1,3 +1,8 @@
+// Verifica se o token existe no sessionStorage
+if (!sessionStorage.getItem('token')) {
+    // Redireciona para a página de login (ou qualquer outra)
+    window.location.href = '../index.html'; // altere para o caminho correto da sua página de login
+}
 let modoVisualizacao = 'mes'; // 'mes' ou 'periodo'
 
 const bola1 = document.querySelector("#bola1");
