@@ -265,6 +265,7 @@ async function enviarRelatorio() {
 
   const visitantes = parseInt(document.getElementById('visitantes').value);
   const totalPresentes = parseInt(document.getElementById('total-presentes').value);
+  const diaSemana = document.getElementById('dia_semana').value
   const dataCulto = document.getElementById('data_culto').value;
   const ofertasGerais = parseFloat(ofertaGeralInput.value) || 0;
   const ofertasSociais = parseFloat(ofertaSocialInput.value) || 0;
@@ -285,6 +286,7 @@ async function enviarRelatorio() {
   }
 
   const dadosRelatorio = {
+    dia_semana: diaSemana,
     data_culto: dataCulto,
     visitantes,
     total_presentes: totalPresentes,
