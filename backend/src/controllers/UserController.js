@@ -55,7 +55,8 @@ class UserController {
         try {
             const usuarios = await database
                 .select('id', 'nome_completo', 'telefone')
-                .from('usuarios');
+                .from('usuarios')
+                .orderBy('nome_completo', 'asc');
     
             return response.status(200).json(usuarios);
         } catch (error) {

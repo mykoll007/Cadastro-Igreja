@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar Dizimista</title>
+    <link rel="stylesheet" href="../css/dizimistas.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div id="container">
+        <div class="align-seta">
+            <a href="inicio.html" id="link-retornar"><img src="../assets/arrow-black.png" id="seta-retroceder"
+                    alt="Seta para voltar página"></a>
+        </div>
+        <img src="../assets/logo-vivendo.jpg" id="logo-vivendo" alt="Logo Vivendo um Novo Tempo">
+        <h2>Consultar Dizimista</h2>
+
+        <div id="display-align">
+            <div id="align-search">
+                <img src="../assets/Search.png" alt="Icone de pesquisa">
+                <input type="search" placeholder="Pesquisar membro">
+            </div>
+        </div>
+
+
+        <div id="align-container">
+            <!-- O conteúdo dos dizimistas será injetado aqui via JS -->
+        </div>
+
+        <div id="btn-voltarlista">
+        <button  onclick="voltarParaLista()">Voltar</button>
+        </div>   
+        <div id="detalhes-dizimista" style="display: none;">
+            <div id="align-dizimista">
+            <img src="../assets/Nome.png" alt="Icone do usuario">
+            <p id="nome-dizimista"></p>
+            </div>   
+            
+            <div id="align-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th id="date"><img src="../assets/Date.png" alt="icone de data"> Data</th>
+                        <th id="valor"><img src="../assets/Cifrao.png" alt="icone de cifrao"> Valor</th>
+                    </tr>
+                </thead>
+                <tbody id="lista-detalhes">
+                    <!-- Linhas inseridas pelo JS -->
+                </tbody>
+            </table>
+            </div>
+        </div>
+
+    </div>
+
+           <!-- Bolinha de carregamento -->
+        <div id="overlay-loading">
+            <div class="spinner"></div>
+        </div>
+
+    <script src="../js/dizimistas.js"></script>
+</body>
+
+</html>

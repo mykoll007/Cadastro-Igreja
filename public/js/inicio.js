@@ -219,3 +219,38 @@ document.getElementById("btn-recarregar").addEventListener("click", async () => 
     }
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+  const btnMembros = document.getElementById('btn-membros');
+  const btnRelatorios = document.getElementById('btn-relatorios');
+  const conteudoPrincipal = document.getElementById('conteudo-principal');
+  const btnsRelatorios = document.getElementById('btns-relatorios');
+
+  function mostrarRelatorios() {
+    conteudoPrincipal.style.display = 'none';
+    btnsRelatorios.style.display = 'grid';
+  }
+
+  function mostrarMembros() {
+    conteudoPrincipal.style.display = 'block';
+    btnsRelatorios.style.display = 'none';
+  }
+
+  btnRelatorios.addEventListener('click', () => {
+    mostrarRelatorios();
+    localStorage.setItem('mostrarRelatorios', 'true');
+  });
+
+  btnMembros.addEventListener('click', () => {
+    mostrarMembros();
+    localStorage.removeItem('mostrarRelatorios');
+  });
+
+  // Verifica no localStorage e mostra a tela correta SEM piscar a padrão
+  if (localStorage.getItem('mostrarRelatorios') === 'true') {
+    mostrarRelatorios();
+  } else {
+    mostrarMembros();
+  }
+});
+
+

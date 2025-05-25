@@ -1,0 +1,258 @@
+/* === Reset & Layout === */
+body {
+    font-family: 'Inter';
+    display: flex;
+    justify-content: center;
+    background-color: #fff;
+    color: #000;
+}
+
+#container {
+    max-width: 500px;
+    margin: 26px auto 0;
+    text-align: center;
+}
+
+/* === Tipografia === */
+h2 {
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#cadastrar-membro {
+    font-size: 27px;
+    margin-bottom: 30px;
+}
+
+label {
+    font-weight: medium;
+}
+
+.card p {
+    margin: 4px 0;
+    font-size: 17px;
+}
+
+.card a {
+    font-size: 14px;
+    text-decoration: none;
+    margin-right: 10px;
+    color: #007bff;
+}
+
+.card a:hover {
+    text-decoration: underline;
+}
+
+/* === Imagens === */
+img {
+    width: 203px;
+    margin-right: 25px;
+}
+
+#seta-retroceder {
+    width: 34px;
+    display: block;
+}
+
+/* === Containers e Alinhamento === */
+.align-seta {
+    display: flex;
+    max-width: 400px;
+    justify-content: left;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.align-seta a {
+    margin-bottom: 25px;
+    width: 38px;
+}
+
+#align-btnEnvio {
+    display: flex;
+    justify-content: center;
+}
+
+#align-btnEnvio button {
+    background-color: #009CFF;
+    width: 146px;
+    height: 44px;
+    margin-bottom: 18px;
+}
+
+/* === Formulários === */
+form {
+    margin-left: 6%;
+    text-align: left;
+    display: grid;
+}
+
+input {
+    font-family: 'Inter';
+    width: 90%;
+    padding: 10px;
+    height: 35px;
+    margin-top: 8px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    border: 1px solid black;
+    font-size: 16px;
+}
+
+select {
+     appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+    max-width: 472px;
+    width: 95%;
+    padding: 10px;
+    height: 57px;
+    margin-top: 8px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    font-size: 17px;
+    border: 1px solid black;
+}
+
+/* === Botões === */
+button,
+.adicionar-btn {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: 'Inter';
+    width: 116px;
+    font-weight: 500;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+#confirmar-dizimo,
+#confirmar-oferta {
+    background-color: #009CFF;
+}
+
+#cancelar-dizimo,
+#cancelar-oferta {
+    background-color: red;
+}
+
+.adicionar-btn:hover {
+    background-color: #333;
+}
+
+/* === Componentes === */
+.card {
+    border: 1px solid black;
+    text-align: center;
+    font-family: 'Inter';
+    padding-top: 9px;
+    border-radius: 4px;
+    max-width: 378px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+}
+
+.remover-dizimo,
+.remover-oferta {
+    color: red;
+    background: none;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    margin: 0;
+}
+
+.relacao {
+    margin-bottom: 12px;
+}
+
+/* === Modais === */
+.modal {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+}
+
+.modal-buttons {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.hidden {
+    display: none;
+}
+
+/* === Autocomplete / Sugestões === */
+.sugestoes-lista {
+    list-style: none;
+    padding: 0;
+    margin-top: -15px;
+    max-width: 289px;
+    max-height: 150px;
+    overflow-y: auto;
+    background: black;
+    color: white;
+    position: absolute;
+    width: 100%;
+    z-index: 1000;
+}
+
+.sugestoes-lista li {
+    padding: 8px;
+    cursor: pointer;
+}
+
+.sugestoes-lista li:hover {
+    background-color: #eee;
+}
+
+/* === Seções === */
+section {
+    margin-bottom: 25px;
+}
+
+/* Carregando do loading */
+#overlay-loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+  
+  .spinner {
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #3498db;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }

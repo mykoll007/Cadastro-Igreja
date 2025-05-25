@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar Relatórios</title>
+    <link rel="stylesheet" href="../css/consultar-relatorio.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@100..1000&family=Inter:wght@100..900&family=Poppins:wght@100..900&family=Urbanist:wght@100..900&display=swap"
+        rel="stylesheet" />
+</head>
+
+<body>
+    <div id="container">
+        <div class="align-seta" id="setaRetornar">
+            <a href="inicio.html" id="link-retornar"><img src="../assets/arrow-black.png" id="seta-retroceder"
+                    alt="Seta para voltar página"></a>
+        </div>
+        <img src="../assets/logo-vivendo.jpg" alt="Logo Vivendo um Novo Tempo">
+        <h2 id="consultar-membro">Consultar Relatórios</h2>
+
+        <div id="align-container">
+            <div id="container-filtro">
+                <div id="align">
+                    <p>Visualizar por:</p>
+                    <div class="align-mes">
+                        <div id="bola1">
+                            <div class="bola-centro"></div>
+                        </div>
+                        <p>Mês</p>
+                        <div id="bola2">
+                            <div class="bola-centro" style="display: none;"></div>
+                        </div>
+                        <p>Período</p>
+                    </div>
+
+                </div>
+                <form>
+                    <div class="align-form">
+                        <label for="mes">Mês:</label>
+                        <select id="mes" name="mes">
+                            <option value="janeiro">janeiro</option>
+                            <option value="fevereiro">fevereiro</option>
+                            <option value="março">março</option>
+                            <option value="abril">abril</option>
+                            <option value="maio" selected>maio</option>
+                            <option value="junho">junho</option>
+                            <option value="julho">julho</option>
+                            <option value="agosto">agosto</option>
+                            <option value="setembro">setembro</option>
+                            <option value="outubro">outubro</option>
+                            <option value="novembro">novembro</option>
+                            <option value="dezembro">dezembro</option>
+                        </select>
+                    </div>
+
+                    <div class="align-form">
+                        <label for="ano">Ano:</label>
+                        <select id="ano" name="ano">
+                            <option value="2024">2024</option>
+                            <option value="2025" selected>2025</option>
+                        </select>
+                    </div>
+
+
+                    <div class="align-form" id="form-periodo" style="display: none;">
+                        <label for="data-inicio">De:</label>
+                        <input type="date" id="data-inicio" name="data-inicio">
+                    </div>
+
+                    <div class="align-form" id="form-ate" style="display: none;">
+                        <label for="data-fim" id="label-datafim">Até:</label>
+                        <input type="date" id="data-fim" name="data-fim">
+                    </div>
+
+                    <br>
+                    <button id="btn-visualizar" type="submit">Visualizar</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="conteudo-pdf"> <!-- INÍCIO DO CONTEÚDO A EXPORTAR -->
+
+            <div id="alternar-display">
+
+                <div class="arrecadacao-total">
+                    <h3 id="titulo-arrecadacao">Total de Arrecadação Mensal:</h3>
+                    <p id="valor-total">R$ 13.000,00</p>
+                </div>
+
+                <div id="container-valores">
+                    <p class="valores-totais">Dízimos : <span id="valor-dizimos">R$ 0,00</span></p>
+                    <p class="valores-totais">Ofertas : <span id="valor-ofertas">R$ 0,00</span></p>
+                    <p class="valores-totais">O. Ofertas : <span id="valor-outras">R$ 0,00</span></p>
+                    <p class="valores-totais">O. Social : <span id="valor-social">R$ 0,00</span></p>
+                </div>
+
+                <div id="container-pdf">
+                    <div id="align-extrair">
+                        <p>Extrair</p>
+                        <img src="../assets/PDF.png" alt="Icone do PDF">
+                    </div>
+                </div>
+            </div>
+            <div id="align-mes">
+                <p id="mes-ano">maio/2025</p>
+            </div>
+            <div id="align-cont-valor">
+                <!-- Aqui vai os valores injetado do JS -->
+            </div>
+
+        </div> <!-- FIM DO CONTEÚDO A EXPORTAR -->
+
+        <div id="tabela-periodo" style="display: none;">
+
+        </div>
+
+
+        <p id="mensagem-erro">
+            Nenhum relatório encontrado para o mês selecionado.
+        </p>
+    </div>
+
+        <!-- Bolinha de carregamento -->
+    <div id="overlay-loading">
+      <div class="spinner"></div>
+    </div>
+
+    <script src="../js/consultar-relatorio.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</body>
+
+</html>
