@@ -263,8 +263,10 @@ function formatarValor(valor) {
 
 function formatarData(dataISO) {
     const data = new Date(dataISO);
+    data.setDate(data.getDate() + 1);
     return data.toLocaleDateString('pt-BR');
 }
+
 
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-visualizar').addEventListener('click', e => {
