@@ -30,11 +30,6 @@ bola2.addEventListener("click", () => {
     formAte.style.display = "flex";
 });
 
-function somarUmDia(dataStr) {
-    const data = new Date(dataStr);
-    data.setDate(data.getDate() + 1);
-    return data.toISOString().slice(0, 10);
-}
 
 async function carregarRelatorios() {
     mostrarOverlay(); // Início do carregamento
@@ -79,7 +74,8 @@ async function carregarRelatorios() {
         }
 
         url += `/periodo?data_inicio=${dataInicio}&data_fim=${dataFim}`;
-        labelPeriodo = `De ${formatarData(somarUmDia(dataInicio))} até ${formatarData(somarUmDia(dataFim))}`;
+        labelPeriodo = `De ${formatarData(dataInicio)} até ${formatarData(dataFim)}`;
+
     }
 
     try {
@@ -262,10 +258,11 @@ function formatarValor(valor) {
 }
 
 function formatarData(dataISO) {
-    const data = new Date(dataISO);
-    data.setDate(data.getDate() + 1);
-    return data.toLocaleDateString('pt-BR');
+  const [ano, mes, dia] = dataISO.split('T')[0].split('-');
+  return `${dia}/${mes}/${ano}`;
 }
+
+
 
 
 document.addEventListener('DOMContentLoaded', () => {

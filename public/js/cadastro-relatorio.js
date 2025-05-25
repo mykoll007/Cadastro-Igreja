@@ -91,7 +91,7 @@ function renderizarDizimos() {
     div.classList.add('card');
     div.innerHTML = `
       <p><strong>👤 ${dizimo.nome}</strong></p>
-      <p>💰 R$ ${dizimo.valor.toFixed(2).replace('.',',')}</p>
+      <p>💰 R$ ${dizimo.valor.toFixed(2).replace('.', ',')}</p>
       <button type="button" class="remover-dizimo" data-index="${index}" style="color:red;background:none;border:none;cursor:pointer;">[Remover]</button>
     `;
     dizimosLista.appendChild(div);
@@ -106,7 +106,7 @@ function renderizarOfertas() {
     div.classList.add('card');
     div.innerHTML = `
       <p><strong>🏷️ ${oferta.descricao}</strong></p>
-      <p>💰 R$ ${oferta.valor.toFixed(2).replace('.',',')}</p>
+      <p>💰 R$ ${oferta.valor.toFixed(2).replace('.', ',')}</p>
       <button type="button" class="remover-oferta" data-index="${index}" style="color:red;background:none;border:none;cursor:pointer;">[Remover]</button>
     `;
     ofertasLista.appendChild(div);
@@ -120,8 +120,8 @@ function atualizarTotais() {
   const ofertasSociais = parseFloat(ofertaSocialInput.value) || 0;
   const totalOutrasOfertas = outrasOfertas.reduce((acc, item) => acc + item.valor, 0);
 
-  totalDizimosInput.value = totalDizimos.toFixed(2).replace('.',',');
-  totalArrecadacaoInput.value = (totalDizimos + ofertasGerais + ofertasSociais + totalOutrasOfertas).toFixed(2).replace('.',',');
+  totalDizimosInput.value = totalDizimos.toFixed(2).replace('.', ',');
+  totalArrecadacaoInput.value = (totalDizimos + ofertasGerais + ofertasSociais + totalOutrasOfertas).toFixed(2).replace('.', ',');
 }
 
 // Abrir modais
@@ -335,9 +335,9 @@ async function enviarRelatorio() {
 
     const msgSucesso = document.getElementById('msg-sucesso');
     msgSucesso.style.display = 'block';
+    document.body.style.overflow = 'hidden'; // trava scroll ao mostrar mensagem
 
     document.getElementById('btn-fechar-msg').onclick = () => {
-      msgSucesso.style.display = 'none';
       window.location.href = 'inicio.html';
     };
 
@@ -380,36 +380,56 @@ function validarFormulario() {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-  if (sessionStorage.getItem('relatorioSucesso') === 'true') {
-    const msgSucesso = document.getElementById('msg-sucesso');
-    msgSucesso.style.display = 'block';
+  const msgSucesso = document.getElementById('msg-sucesso');
+  const overlay = document.getElementById('overlay');
+  const btnFechar = document.getElementById('btn-fechar-msg');
 
+  function mostrarMensagem() {
+    overlay.style.display = 'block';
+    msgSucesso.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function esconderMensagem() {
+    overlay.style.display = 'none';
+    msgSucesso.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  btnFechar.addEventListener('click', esconderMensagem);
+
+  if (sessionStorage.getItem('relatorioSucesso') === 'true') {
+    mostrarMensagem();
     sessionStorage.removeItem('relatorioSucesso');
 
-    // Redirecionar automaticamente após 3 segundos
     setTimeout(() => {
       window.location.href = 'inicio.html';
     }, 3000);
+  }
 
-    // Também mantém o botão para fechar manualmente antes do redirecionamento
-    document.getElementById('btn-fechar-msg').addEventListener('click', () => {
-      msgSucesso.style.display = 'none';
-      window.location.href = 'inicio.html';
+  document.getElementById('btn-fechar-msg').addEventListener('click', () => {
+    msgSucesso.style.display = 'none';
+    window.location.href = 'inicio.html';
+  });
+
+  // Capitalização dos campos
+  const inputDizimista = document.getElementById('input-dizimista');
+  const descricaoOferta = document.getElementById('descricao-oferta');
+
+  if (inputDizimista) capitalizeFirstLetter(inputDizimista);
+  if (descricaoOferta) capitalizeFirstLetter(descricaoOferta);
+
+  function capitalizeFirstLetter(inputElement) {
+    inputElement.addEventListener('input', function () {
+      const input = this.value;
+      if (input.length > 0) {
+        this.value = input.charAt(0).toUpperCase() + input.slice(1);
+      }
     });
   }
 });
 
-function capitalizeFirstLetter(inputElement) {
-  inputElement.addEventListener('input', function () {
-    const input = this.value;
-    if (input.length > 0) {
-      this.value = input.charAt(0).toUpperCase() + input.slice(1);
-    }
-  });
-}
 
-capitalizeFirstLetter(document.getElementById('input-dizimista'));
-capitalizeFirstLetter(document.getElementById('descricao-oferta'));
 
 
 function mostrarOverlay() {

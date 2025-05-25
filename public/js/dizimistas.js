@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       tbody.innerHTML = dados.map(registro => `
         <tr>
-          <td>${new Date(registro.data_culto).toLocaleDateString()}</td>
+          <td>${formatarDataSimples(registro.data_culto)}</td>
           <td>R$ ${parseFloat(registro.valor).toFixed(2).replace('.', ',')}</td>
         </tr>
       `).join('');
@@ -125,6 +125,15 @@ document.addEventListener('DOMContentLoaded', () => {
       overlayLoading.style.display = 'none'; // esconder loading
     }
   }
+
+  // Função que formata data no formato dd/mm/aaaa sem mexer em fuso horário
+function formatarDataSimples(dataISO) {
+  if (!dataISO) return '';
+  const dataSomente = dataISO.split('T')[0]; 
+  const [ano, mes, dia] = dataSomente.split('-');
+  return `${dia}/${mes}/${ano}`;
+}
+
 
   // Função do botão Voltar
   window.voltarParaLista = function () {
