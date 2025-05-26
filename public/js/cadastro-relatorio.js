@@ -72,16 +72,7 @@ async function carregarUsuarios() {
   }
 }
 
-// Preenche o selectDizimista com os usuários
-function preencherSelectUsuarios() {
-  selectDizimista.innerHTML = '';
-  usuarios.forEach(usuario => {
-    const option = document.createElement('option');
-    option.value = usuario.nome_completo;
-    option.textContent = usuario.nome_completo;
-    selectDizimista.appendChild(option);
-  });
-}
+
 
 // Renderiza a lista de dízimos
 function renderizarDizimos() {
@@ -222,23 +213,50 @@ ofertasLista.addEventListener('click', (e) => {
 inputDizimista.addEventListener('input', () => {
   const valor = inputDizimista.value.toLowerCase().trim();
   sugestoesLista.innerHTML = '';
-  if (!valor) return;
+  if (!valor) {
+    sugestoesLista.style.display = 'none';
+    return;
+  }
 
-  const filtrados = usuarios.filter(usuario =>
-    usuario.nome_completo.toLowerCase().includes(valor)
-  );
+  const nomesSugestao = new Set();
 
-  filtrados.forEach(usuario => {
+  // Usuários do backend
+  usuarios.forEach(usuario => {
+    if (usuario.nome_completo.toLowerCase().includes(valor)) {
+      nomesSugestao.add(usuario.nome_completo);
+    }
+  });
+
+  // Nomes livres já digitados
+  dizimos.forEach(dizimo => {
+    const nomeAtual = dizimo.nome_livre || dizimo.nome;
+    if (nomeAtual.toLowerCase().includes(valor)) {
+      nomesSugestao.add(nomeAtual);
+    }
+  });
+
+  if (nomesSugestao.size === 0) {
+    sugestoesLista.style.display = 'none';
+    return;
+  }
+
+  // Exibir sugestões
+  nomesSugestao.forEach(nome => {
     const li = document.createElement('li');
-    li.textContent = usuario.nome_completo;
+    li.textContent = nome;
     li.style.cursor = 'pointer';
     li.addEventListener('click', () => {
-      inputDizimista.value = usuario.nome_completo;
+      inputDizimista.value = nome;
       sugestoesLista.innerHTML = '';
+      sugestoesLista.style.display = 'none';
     });
     sugestoesLista.appendChild(li);
   });
+
+  sugestoesLista.style.display = 'block';
 });
+
+
 
 // Fecha sugestões ao clicar fora
 document.addEventListener('click', (e) => {
@@ -250,7 +268,7 @@ document.addEventListener('click', (e) => {
 // Inicialização ao carregar
 document.addEventListener("DOMContentLoaded", async () => {
   await carregarUsuarios();
-  preencherSelectUsuarios();
+
   atualizarTotais();
 });
 
