@@ -72,6 +72,28 @@ async function carregarUsuarios() {
   }
 }
 
+let nomesLivres = [];
+
+async function carregarNomesLivres() {
+  const token = sessionStorage.getItem("token");
+  if (!token) return;
+
+  try {
+    const resposta = await fetch("https://cadastro-igreja-ten.vercel.app/nomes-livres", {
+      headers: {
+        "Authorization": "Bearer " + token,
+        "Content-Type": "application/json"
+      }
+    });
+
+    if (!resposta.ok) throw new Error("Erro ao carregar nomes livres");
+    nomesLivres = await resposta.json();
+  } catch (erro) {
+    console.error("Erro ao carregar nomes livres:", erro);
+  }
+}
+
+
 
 
 // Renderiza a lista de dízimos
@@ -268,7 +290,7 @@ document.addEventListener('click', (e) => {
 // Inicialização ao carregar
 document.addEventListener("DOMContentLoaded", async () => {
   await carregarUsuarios();
-
+  await carregarNomesLivres();
   atualizarTotais();
 });
 

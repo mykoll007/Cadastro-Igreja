@@ -18,6 +18,7 @@ router.put('/admin/redefinir', AdminController.redefinirSenha);
 
 // Cadastro e consulta principal
 router.post('/relatorio/cadastrar', authMiddleware, RelatorioController.cadastrarRelatorio);
+router.get('/nomes-livres', authMiddleware, RelatorioController.consultarNomesLivres);
 router.get('/dizimistas', authMiddleware, RelatorioController.consultarDizimistas);
 router.get('/relatorios', authMiddleware, RelatorioController.consultarRelatorios);
 router.get('/relatorios/periodo', authMiddleware, RelatorioController.consultarRelatoriosPorPeriodo);

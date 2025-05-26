@@ -245,6 +245,19 @@ class RelatorioController {
     }
   }
 
+    async consultarNomesLivres(request, response) {
+    try {
+      const nomesLivres = await database('dizimos')
+        .distinct('nome_livre')
+        .whereNotNull('nome_livre')
+        .orderBy('nome_livre', 'asc');
+
+      return response.json(nomesLivres.map(n => n.nome_livre));
+    } catch (error) {
+      console.error('Erro ao consultar nomes livres:', error);
+      return response.status(500).json({ error: 'Erro ao buscar nomes livres.' });
+    }
+  }
 
 
 }
