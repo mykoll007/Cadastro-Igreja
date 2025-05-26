@@ -59,31 +59,27 @@ class RelatorioController {
       return response.status(500).json({ error: 'Erro ao cadastrar relatório.' });
     }
   }
-// Buscar todos os dizimistas (usuários cadastrados + nome_livre distintos)
-async consultarDizimistas(request, response) {
-  try {
-    const results = await database
-      .select('nome')
-      .from(function () {
-        this.select('nome_completo as nome')
-          .from('usuarios')
-          .union(function () {
-            this.select('nome_livre as nome')
-              .from('dizimos')
-              .whereNotNull('nome_livre')
-              .where('nome_livre', '!=', '');
-          })
-          .as('dizimistas');
-      })
-      .orderBy('nome');
+  // Buscar todos os dizimistas (usuário_id e nome_livre)
+  async consultarDizimistas(request, response) {
+    try {
+      const dizimistas = await database('dizimos')
+        .leftJoin('usuarios', 'dizimos.usuario_id', 'usuarios.id')
+        .select(
+          'dizimos.usuario_id',
+          'dizimos.nome_livre',
+          'usuarios.nome_completo',
+          database.raw(`COALESCE(usuarios.nome_completo, dizimos.nome_livre) as nome_ordenado`)
+        )
+        .groupBy('dizimos.usuario_id', 'dizimos.nome_livre', 'usuarios.nome_completo')
+        .orderBy('nome_ordenado', 'asc');
 
-    return response.json(results);
-  } catch (error) {
-    console.error('Erro ao consultar dizimistas:', error);
-    return response.status(500).json({ error: 'Erro ao buscar dizimistas.' });
+
+      return response.json(dizimistas);
+    } catch (error) {
+      console.error('Erro ao consultar dizimistas:', error);
+      return response.status(500).json({ error: 'Erro ao buscar dizimistas.' });
+    }
   }
-}
-
   // Buscar detalhes dos dízimos por usuário_id
   async detalhesDizimistaUsuario(request, response) {
     const { id } = request.params;
