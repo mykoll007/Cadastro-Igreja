@@ -249,11 +249,18 @@ inputDizimista.addEventListener('input', () => {
     }
   });
 
-  // Nomes livres já digitados
+  // Nomes livres já digitados localmente
   dizimos.forEach(dizimo => {
     const nomeAtual = dizimo.nome_livre || dizimo.nome;
     if (nomeAtual.toLowerCase().includes(valor)) {
       nomesSugestao.add(nomeAtual);
+    }
+  });
+
+  // Nomes livres carregados do backend
+  nomesLivres.forEach(nomeLivre => {
+    if (nomeLivre.toLowerCase().includes(valor)) {
+      nomesSugestao.add(nomeLivre);
     }
   });
 
@@ -277,6 +284,7 @@ inputDizimista.addEventListener('input', () => {
 
   sugestoesLista.style.display = 'block';
 });
+
 
 
 
