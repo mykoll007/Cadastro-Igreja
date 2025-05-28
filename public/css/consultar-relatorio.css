@@ -137,8 +137,19 @@ form button{
     border: 1px;
     border-radius: 6px;
 }
+#container-alternar{
+    display: flex;
+    justify-content: center;
+}
 #alternar-display, #mes-ano{
     display: none;
+}
+#alternar-display{
+    border: 1px solid black;
+    width: 302px;
+    margin-top: 16px;
+    padding-bottom: 16px;
+    border-radius: 4px;
 }
 .arrecadacao-total {
   text-align: center;
