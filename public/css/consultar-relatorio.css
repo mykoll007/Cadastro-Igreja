@@ -93,6 +93,9 @@ img {
     top: 5px;
     left: 5px;
 }
+fieldset{
+    max-width: 286px;
+}
 form{
     padding-bottom: 14px;
 }
