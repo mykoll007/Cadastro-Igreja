@@ -268,6 +268,18 @@ async editarRelatorio(request, response) {
     return response.status(400).json({ error: 'ID do relatório é obrigatório.' });
   }
 
+  // Validação da data e cálculo do dia da semana
+  const [ano, mes, dia] = data_culto.split('-').map(Number);
+  const dataObj = new Date(ano, mes - 1, dia);
+
+  const dia_semana_raw = dataObj.toLocaleDateString('pt-BR', { weekday: 'long' });
+  const dia_semana = dia_semana_raw.charAt(0).toUpperCase() + dia_semana_raw.slice(1).replace('-feira', '');
+
+  const diasPermitidos = ['Domingo', 'Quarta', 'Sábado'];
+  if (!diasPermitidos.includes(dia_semana)) {
+    return response.status(400).json({ error: `Dia da semana inválido: ${dia_semana}. Permitido apenas Domingo, Quarta ou Sábado.` });
+  }
+
   const trx = await database.transaction();
 
   try {
@@ -276,6 +288,7 @@ async editarRelatorio(request, response) {
       .where('id', id)
       .update({
         data_culto,
+        dia_semana,
         visitantes,
         total_presentes,
         oferta_geral,
