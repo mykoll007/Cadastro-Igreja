@@ -242,7 +242,7 @@ span{
 }
 .container-valor{
     display: grid;
-    width: 280px;
+    max-width: 295px;
     height: 100%;
     border: 1px solid;
     padding-top: 7px;
