@@ -95,6 +95,7 @@ img {
 }
 fieldset{
     max-width: 295px;
+    padding: 0;
 }
 form{
     padding-bottom: 14px;
