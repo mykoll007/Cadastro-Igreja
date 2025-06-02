@@ -22,6 +22,8 @@ router.get('/nomes-livres', authMiddleware, RelatorioController.consultarNomesLi
 router.get('/dizimistas', authMiddleware, RelatorioController.consultarDizimistas);
 router.get('/relatorios', authMiddleware, RelatorioController.consultarRelatorios);
 router.get('/relatorios/periodo', authMiddleware, RelatorioController.consultarRelatoriosPorPeriodo);
+router.put('/relatorios/:id', authMiddleware, RelatorioController.editarRelatorio);
+
 
 
 // Detalhes de dizimistas

@@ -173,79 +173,166 @@ class RelatorioController {
     }
   }
 
-  async consultarRelatoriosPorPeriodo(request, response) {
-    const { data_inicio, data_fim } = request.query;
+async consultarRelatoriosPorPeriodo(request, response) {
+  const { data_inicio, data_fim } = request.query;
 
-    if (!data_inicio || !data_fim) {
-      return response.status(400).json({ error: 'Data inicial e final são obrigatórias.' });
-    }
-
-    try {
-      const relatorios = await database('relatorios_culto')
-        .whereBetween('data_culto', [data_inicio, data_fim])
-        .orderBy('data_culto', 'asc');
-
-      const resultado = [];
-
-      for (const relatorio of relatorios) {
-        const dizimos = await database('dizimos')
-          .leftJoin('usuarios', 'dizimos.usuario_id', 'usuarios.id')
-          .where('relatorio_id', relatorio.id)
-          .select([
-            'dizimos.valor',
-            'usuarios.nome_completo',
-            'dizimos.nome_livre'
-          ]);
-
-        const totalDizimos = dizimos.reduce((acc, item) => acc + Number(item.valor), 0);
-
-        const outrasOfertas = await database('outras_ofertas')
-          .where('relatorio_id', relatorio.id)
-          .sum('valor as total');
-
-        const totalOutrasOfertas = Number(outrasOfertas[0].total || 0);
-
-        const totalArrecadacao = totalDizimos +
-          Number(relatorio.oferta_geral || 0) +
-          Number(relatorio.oferta_social || 0) +
-          totalOutrasOfertas;
-
-        const dizimistasFormatados = dizimos.map(item => {
-          const nome = item.nome_completo || item.nome_livre;
-          const valorFormatado = Number(item.valor).toLocaleString('pt-BR', {
-            style: 'currency',
-            currency: 'BRL'
-          });
-          return `• ${nome} – ${valorFormatado}`;
-        });
-
-        resultado.push({
-          data: relatorio.data_culto,
-          dia_semana: relatorio.dia_semana,
-          visitantes: relatorio.visitantes,
-          total_presentes: relatorio.total_presentes,
-          oferta_geral: relatorio.oferta_geral,
-          oferta_social: relatorio.oferta_social,
-          dizimos: dizimos.map(item => ({
-            nome: item.nome_completo || item.nome_livre,
-            valor: item.valor
-          })),
-          dizimistas_formatados: dizimistasFormatados,
-          total_dizimos: totalDizimos,
-          total_outras_ofertas: totalOutrasOfertas,
-          total_arrecadacao: totalArrecadacao
-        });
-      }
-
-      return response.json(resultado);
-
-    } catch (error) {
-      console.error('Erro ao consultar relatórios por período:', error);
-      return response.status(500).json({ error: 'Erro ao consultar relatórios por período.' });
-    }
+  if (!data_inicio || !data_fim) {
+    return response.status(400).json({ error: 'Data inicial e final são obrigatórias.' });
   }
 
-    async consultarNomesLivres(request, response) {
+  try {
+    const relatorios = await database('relatorios_culto')
+      .whereBetween('data_culto', [data_inicio, data_fim])
+      .orderBy('data_culto', 'asc');
+
+    const resultado = [];
+
+    for (const relatorio of relatorios) {
+      const dizimos = await database('dizimos')
+        .leftJoin('usuarios', 'dizimos.usuario_id', 'usuarios.id')
+        .where('relatorio_id', relatorio.id)
+        .select([
+          'dizimos.valor',
+          'usuarios.nome_completo',
+          'dizimos.nome_livre'
+        ]);
+
+      const totalDizimos = dizimos.reduce((acc, item) => acc + Number(item.valor), 0);
+
+      // Buscar todas as outras ofertas com descrição e valor
+      const outrasOfertas = await database('outras_ofertas')
+        .where('relatorio_id', relatorio.id)
+        .select(['descricao', 'valor']);
+
+      const totalOutrasOfertas = outrasOfertas.reduce((acc, oferta) => acc + Number(oferta.valor), 0);
+
+      const totalArrecadacao = totalDizimos +
+        Number(relatorio.oferta_geral || 0) +
+        Number(relatorio.oferta_social || 0) +
+        totalOutrasOfertas;
+
+      const dizimistasFormatados = dizimos.map(item => {
+        const nome = item.nome_completo || item.nome_livre;
+        const valorFormatado = Number(item.valor).toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL'
+        });
+        return `• ${nome} – ${valorFormatado}`;
+      });
+
+      resultado.push({
+        id: relatorio.id,
+        data: relatorio.data_culto,
+        dia_semana: relatorio.dia_semana,
+        visitantes: relatorio.visitantes,
+        total_presentes: relatorio.total_presentes,
+        oferta_geral: relatorio.oferta_geral,
+        oferta_social: relatorio.oferta_social,
+        dizimos: dizimos.map(item => ({
+          nome: item.nome_completo || item.nome_livre,
+          valor: item.valor
+        })),
+        dizimistas_formatados: dizimistasFormatados,
+        outras_ofertas: outrasOfertas.map(oferta => ({
+          descricao: oferta.descricao,
+          valor: oferta.valor
+        })),
+        total_dizimos: totalDizimos,
+        total_outras_ofertas: totalOutrasOfertas,
+        total_arrecadacao: totalArrecadacao
+      });
+    }
+
+    return response.json(resultado);
+
+  } catch (error) {
+    console.error('Erro ao consultar relatórios por período:', error);
+    return response.status(500).json({ error: 'Erro ao consultar relatórios por período.' });
+  }
+}
+
+
+async editarRelatorio(request, response) {
+  const { id } = request.params;
+  const {
+    data_culto,
+    visitantes,
+    total_presentes,
+    oferta_geral,
+    oferta_social,
+    dizimos = [],
+    outras_ofertas = []
+  } = request.body;
+
+  if (!id) {
+    return response.status(400).json({ error: 'ID do relatório é obrigatório.' });
+  }
+
+  const trx = await database.transaction();
+
+  try {
+    // Atualiza dados principais
+    await trx('relatorios_culto')
+      .where('id', id)
+      .update({
+        data_culto,
+        visitantes,
+        total_presentes,
+        oferta_geral,
+        oferta_social
+      });
+
+    // Remove todos os dízimos antigos
+    await trx('dizimos').where('relatorio_id', id).del();
+
+    // Insere novos dízimos
+    for (const dizimo of dizimos) {
+      await trx('dizimos').insert({
+        relatorio_id: id,
+        usuario_id: dizimo.usuario_id || null,
+        nome_livre: dizimo.nome_livre || dizimo.nome || null,
+        valor: dizimo.valor
+      });
+    }
+
+    // Remove outras ofertas que não estão mais presentes
+    const idsOfertasMantidas = outras_ofertas.filter(o => o.id).map(o => o.id);
+    await trx('outras_ofertas')
+      .where('relatorio_id', id)
+      .whereNotIn('id', idsOfertasMantidas.length ? idsOfertasMantidas : [0])
+      .del();
+
+    // Atualiza ou insere as outras ofertas
+    for (const oferta of outras_ofertas) {
+      if (oferta.id) {
+        await trx('outras_ofertas')
+          .where('id', oferta.id)
+          .update({
+            descricao: oferta.descricao,
+            valor: oferta.valor
+          });
+      } else {
+        await trx('outras_ofertas').insert({
+          relatorio_id: id,
+          descricao: oferta.descricao,
+          valor: oferta.valor
+        });
+      }
+    }
+
+    await trx.commit();
+    return response.json({ message: 'Relatório atualizado com sucesso.' });
+  } catch (error) {
+    await trx.rollback();
+    console.error('Erro ao editar relatório:', error);
+    return response.status(500).json({ error: 'Erro ao editar relatório.' });
+  }
+}
+
+
+
+
+  async consultarNomesLivres(request, response) {
     try {
       const nomesLivres = await database('dizimos')
         .distinct('nome_livre')

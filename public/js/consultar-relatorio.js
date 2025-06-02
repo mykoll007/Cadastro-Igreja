@@ -198,17 +198,13 @@ function renderizarRelatoriosPorPeriodo(relatorios) {
 
     relatorios.forEach(relatorio => {
         const {
-            data,
-            dia_semana,
-            visitantes,
-            total_presentes,
-            oferta_geral,
-            oferta_social,
-            dizimos,
-            total_dizimos,
-            total_arrecadacao,
-            total_outras_ofertas
+            id, _id, data, dia_semana, visitantes, total_presentes,
+            oferta_geral, oferta_social, dizimos,
+            outras_ofertas = [],
+            total_dizimos, total_arrecadacao, total_outras_ofertas
         } = relatorio;
+
+        const relatorioId = id || _id;
 
         totalGeralArrecadacao += Number(total_arrecadacao);
         totalDizimos += Number(total_dizimos);
@@ -226,6 +222,13 @@ function renderizarRelatoriosPorPeriodo(relatorios) {
             </div>
         `).join('');
 
+        const outrasOfertasHtml = outras_ofertas.map(oferta => `
+            <div class="align-valor outra-oferta-item" data-id="${oferta.id}" data-descricao="${oferta.descricao}">
+                <p>${oferta.descricao}:</p>
+                <p class="valor">R$ ${formatarValor(oferta.valor)}</p>
+            </div>
+        `).join('');
+
         const div = document.createElement('div');
         div.classList.add('container-valor');
         div.innerHTML = `
@@ -235,15 +238,18 @@ function renderizarRelatoriosPorPeriodo(relatorios) {
             <div class="align-valor"><p>Total Presentes:</p><p class="valor">${total_presentes}</p></div>
             <div class="align-valor"><p>Ofertas Gerais:</p><p class="valor">R$ ${formatarValor(oferta_geral)}</p></div>
             <div class="align-valor"><p>Oferta Social:</p><p class="valor">R$ ${formatarValor(oferta_social)}</p></div>
-            <div class="align-valor"><p>Outras Ofertas:</p><p class="valor">R$ ${formatarValor(total_outras_ofertas || 0)}</p></div>
+            <div style="height: 1px; margin-top: 8px; background-color: black;"></div>
+            ${outrasOfertasHtml}
+            <div class="align-valor"><p>Total Outras Ofertas:</p><p class="valor">R$ ${formatarValor(total_outras_ofertas || 0)}</p></div>
             ${dizimosHtml}
             <div class="align-valor"><p>Total Dízimos:</p><p class="valor">R$ ${formatarValor(total_dizimos)}</p></div>
             <div class="align-valor"><p>Total Arrecadação:</p><p class="valor" style="color: green; font-weight: 500">R$ ${formatarValor(total_arrecadacao)}</p></div>
+            <button class="btn-editar" data-id="${relatorioId}">Editar</button>
         `;
         container.appendChild(div);
     });
 
-    // Atualiza todos os totais na UI para o modo período
+    // Atualiza totais na UI para modo período
     document.getElementById('valor-total').textContent = `R$ ${formatarValor(totalGeralArrecadacao)}`;
     document.getElementById('valor-dizimos').textContent = `R$ ${formatarValor(totalDizimos)}`;
     document.getElementById('valor-ofertas').textContent = `R$ ${formatarValor(totalOfertas)}`;
@@ -251,20 +257,256 @@ function renderizarRelatoriosPorPeriodo(relatorios) {
     document.getElementById('valor-social').textContent = `R$ ${formatarValor(totalSocial)}`;
 
     const dizimoItems = document.querySelectorAll('.dizimo-item');
-
     if (dizimoItems.length > 0) {
         dizimoItems[0].style.marginTop = '10px';
         dizimoItems[dizimoItems.length - 1].style.marginBottom = '4px';
     }
+
+    const botoesEditar = container.querySelectorAll('.btn-editar');
+    botoesEditar.forEach(botao => {
+        botao.addEventListener('click', (e) => {
+            const btn = e.currentTarget;
+            const idRelatorio = btn.getAttribute('data-id');
+            console.log("ID do relatório para editar:", idRelatorio);
+            abrirEditorRelatorio(idRelatorio);
+        });
+    });
 }
+
+
+
+async function abrirEditorRelatorio(id) {
+    if (!id) {
+        alert('ID do relatório inválido para edição.');
+        return;
+    }
+
+    const container = document.getElementById('align-cont-valor');
+    const divRelatorio = [...container.children].find(div => div.querySelector(`button[data-id="${id}"]`));
+
+    if (!divRelatorio) {
+        alert('Relatório não encontrado para edição.');
+        return;
+    }
+
+    const htmlOriginal = divRelatorio.innerHTML; // Salva o conteúdo original
+
+    const dataAtual = divRelatorio.querySelector('.align-valor:nth-child(1) .valor').textContent;
+    const diaSemanaAtual = divRelatorio.querySelector('.align-valor:nth-child(2) .valor').textContent;
+    const visitantesAtual = divRelatorio.querySelector('.align-valor:nth-child(3) .valor').textContent;
+    const totalPresentesAtual = divRelatorio.querySelector('.align-valor:nth-child(4) .valor').textContent;
+    const ofertaGeralAtual = divRelatorio.querySelector('.align-valor:nth-child(5) .valor').textContent.replace('R$ ', '').replace('.', '').replace(',', '.').trim();
+    const ofertaSocialAtual = divRelatorio.querySelector('.align-valor:nth-child(6) .valor').textContent.replace('R$ ', '').replace('.', '').replace(',', '.').trim();
+
+    let outrasOfertasArray = [];
+    const outrasOfertasElementos = divRelatorio.querySelectorAll('.outra-oferta-item');
+    outrasOfertasElementos.forEach(element => {
+        const descricao = element.getAttribute('data-descricao') || '';
+        let valorTexto = element.querySelector('.valor')?.textContent.trim() || '0';
+        valorTexto = valorTexto.replace('R$', '').replace('.', '').replace(',', '.').trim();
+
+        outrasOfertasArray.push({
+            id: Number(element.getAttribute('data-id')) || 0,
+            descricao,
+            valor: parseFloat(valorTexto) || 0
+        });
+    });
+
+    if (outrasOfertasArray.length === 0) {
+        outrasOfertasArray.push({ descricao: '', valor: 0 });
+    }
+
+    const dizimosDivs = divRelatorio.querySelectorAll('.dizimo-item');
+    let dizimosInputsHtml = '';
+    dizimosDivs.forEach((dizimoDiv, index) => {
+        const nome = dizimoDiv.querySelector('.dizimo-info .valor').textContent;
+        const valorText = dizimoDiv.querySelector('.dizimo-info p:nth-child(2)').textContent;
+        const valor = valorText.replace('R$ ', '').replace('.', '').replace(',', '.').trim();
+
+        dizimosInputsHtml += `
+      <div class="dizimo-editar">
+        <label>Nome Dízimo #${index + 1}: <input type="text" name="dizimo-nome" value="${nome}"></label>
+        <label>Valor Dízimo #${index + 1}: <input type="number" step="0.01" name="dizimo-valor" value="${valor}"></label>
+      </div>
+    `;
+    });
+
+    let outrasOfertasInputsHtml = '';
+    outrasOfertasArray.forEach((oferta, index) => {
+        outrasOfertasInputsHtml += `
+      <div class="outra-oferta-item" data-id="${oferta.id}">
+        <label>Descrição #${index + 1}:
+          <input type="text" class="outra-desc" name="outra-descricao" value="${oferta.descricao}">
+        </label>
+        <label>Valor #${index + 1}:
+          <input type="number" step="0.01" name="outra-valor" value="${oferta.valor}">
+        </label>
+      </div>
+    `;
+    });
+
+    divRelatorio.innerHTML = `
+    <label>Data: <input type="date" id="input-data" value="${formatarDataParaInput(dataAtual)}"></label>
+    <label>Dia da Semana: <input type="text" id="input-dia-semana" value="${diaSemanaAtual}" readonly></label>
+    <label>Visitantes: <input type="number" id="input-visitantes" value="${visitantesAtual}"></label>
+    <label>Total Presentes: <input type="number" id="input-total-presentes" value="${totalPresentesAtual}"></label>
+    <label>Ofertas Gerais: <input type="number" step="0.01" id="input-oferta-geral" value="${ofertaGeralAtual}"></label>
+    <label>Oferta Social: <input type="number" step="0.01" id="input-oferta-social" value="${ofertaSocialAtual}"></label>
+
+    <fieldset>
+      <legend>Outras Ofertas</legend>
+      <div id="container-outras-ofertas">
+        ${outrasOfertasInputsHtml}
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Dízimos</legend>
+      ${dizimosInputsHtml || '<p>Sem dízimos cadastrados.</p>'}
+    </fieldset>
+
+    <button id="btn-salvar">Salvar</button>
+    <button id="btn-cancelar">Cancelar</button>
+  `;
+
+    divRelatorio.querySelector('#btn-salvar').addEventListener('click', async () => {
+        const data = divRelatorio.querySelector('#input-data').value;
+        const visitantes = divRelatorio.querySelector('#input-visitantes').value;
+        const totalPresentes = divRelatorio.querySelector('#input-total-presentes').value;
+        const ofertaGeral = divRelatorio.querySelector('#input-oferta-geral').value;
+        const ofertaSocial = divRelatorio.querySelector('#input-oferta-social').value;
+
+        const outrasOfertasDivs = divRelatorio.querySelectorAll('.outra-oferta-item');
+        const outras_ofertas = [...outrasOfertasDivs].map(div => {
+            const idAttr = div.getAttribute('data-id');
+            const id = idAttr ? Number(idAttr) : undefined;
+            const descricao = div.querySelector('input.outra-desc').value.trim();
+            const valor = parseFloat(div.querySelector('input[name="outra-valor"]').value) || 0;
+
+            return {
+                ...(id !== undefined && { id }),
+                descricao,
+                valor
+            };
+        }).filter(oferta => oferta.descricao !== '' && oferta.valor > 0);
+
+        const nomesDizimos = [...divRelatorio.querySelectorAll('input[name="dizimo-nome"]')].map(input => input.value.trim());
+        const valoresDizimos = [...divRelatorio.querySelectorAll('input[name="dizimo-valor"]')].map(input => input.value);
+
+        const dizimos = nomesDizimos.map((nome, i) => ({
+            nome_livre: nome,
+            valor: parseFloat(valoresDizimos[i]) || 0
+        })).filter(d => d.nome_livre !== '' && d.valor > 0);
+
+        const totalDizimos = dizimos.reduce((acc, curr) => acc + curr.valor, 0);
+        const totalOutrasOfertas = outras_ofertas.reduce((acc, curr) => acc + curr.valor, 0);
+        const totalArrecadacao = Number(ofertaGeral) + Number(ofertaSocial) + totalDizimos + totalOutrasOfertas;
+
+        const body = {
+            data_culto: data,
+            visitantes: Number(visitantes),
+            total_presentes: Number(totalPresentes),
+            oferta_geral: Number(ofertaGeral),
+            oferta_social: Number(ofertaSocial),
+            outras_ofertas,
+            dizimos,
+            total_dizimos: totalDizimos,
+            total_outras_ofertas: totalOutrasOfertas,
+            total_arrecadacao: totalArrecadacao,
+        };
+
+        try {
+            const token = sessionStorage.getItem('token');
+            if (!token) {
+                alert('Usuário não autenticado. Faça login novamente.');
+                return;
+            }
+
+            const response = await fetch(`https://cadastro-igreja-ten.vercel.app/relatorios/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify(body)
+            });
+
+            if (response.ok) {
+                alert('Relatório atualizado com sucesso!');
+
+                window.location.reload(false);
+            } else {
+                const erro = await response.text();
+                alert(`Erro ao salvar: ${erro}`);
+            }
+        } catch (error) {
+            alert('Erro ao salvar o relatório: ' + error.message);
+        }
+    });
+
+    divRelatorio.querySelector('#btn-cancelar').addEventListener('click', () => {
+        divRelatorio.innerHTML = htmlOriginal;
+
+        // Reatribui o evento do botão "Editar"
+        setTimeout(() => {
+            const botaoEditar = divRelatorio.querySelector(`button[data-id="${id}"]`);
+            if (botaoEditar) {
+                botaoEditar.addEventListener('click', () => abrirEditorRelatorio(id));
+            }
+        }, 0);
+    });
+
+    divRelatorio.querySelector('#input-data').addEventListener('change', e => {
+        const [ano, mes, dia] = e.target.value.split('-').map(Number);
+        const novaData = new Date(ano, mes - 1, dia);
+        const diaSemana = novaData.toLocaleDateString('pt-BR', { weekday: 'long' });
+        divRelatorio.querySelector('#input-dia-semana').value = diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1);
+    });
+
+}
+
+function formatarDataParaInput(dataStr) {
+    const partes = dataStr.split('/');
+    return `${partes[2]}-${partes[1]}-${partes[0]}`;
+}
+
+
+function formatarDataParaInput(dataStr) {
+    const partes = dataStr.split('/');
+    return `${partes[2]}-${partes[1]}-${partes[0]}`;
+}
+
+
+
+
+// Mesma função auxiliar para data no formato correto
+function formatarDataParaInput(dataStr) {
+    const partes = dataStr.split('/');
+    if (partes.length === 3) {
+        return `${partes[2]}-${partes[1].padStart(2, '0')}-${partes[0].padStart(2, '0')}`;
+    }
+    return '';
+}
+
+
+// Função auxiliar para converter data exibida no formato dd/mm/yyyy para yyyy-mm-dd para input type=date
+function formatarDataParaInput(dataStr) {
+    // Supondo data no formato dd/mm/yyyy
+    const partes = dataStr.split('/');
+    if (partes.length === 3) {
+        return `${partes[2]}-${partes[1].padStart(2, '0')}-${partes[0].padStart(2, '0')}`;
+    }
+    return ''; // fallback
+}
+
 
 function formatarValor(valor) {
     return Number(valor).toFixed(2).replace('.', ',');
 }
 
 function formatarData(dataISO) {
-  const [ano, mes, dia] = dataISO.split('T')[0].split('-');
-  return `${dia}/${mes}/${ano}`;
+    const [ano, mes, dia] = dataISO.split('T')[0].split('-');
+    return `${dia}/${mes}/${ano}`;
 }
 
 
